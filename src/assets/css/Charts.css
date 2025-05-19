@@ -1,0 +1,73 @@
+/* for charts display */
+
+.chart-grid.calculate {
+    display: grid;
+    grid-template-rows: repeat(4, minmax(250px, 25%));
+    grid-template-columns: repeat(4, 23.5%);
+    row-gap: 20px;
+    column-gap: 2%;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 2500px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+
+    height: fit-content;
+}
+
+.calculate.item-1 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    background-color: bisque;
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+
+}
+
+.calculate.item-2 {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    background-color: aquamarine;
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+
+}
+
+.calculate.item-3 {
+    background-color: blueviolet;
+
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+
+.calculate.item-4 {
+    background-color: rgb(208, 226, 43);
+
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+
+.calculate.item-5 {
+    background-color: brown;
+
+    grid-column-start: 3;
+    grid-column-end: 5;
+    box-sizing: border-box;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+}
+
+/* in personal charts */

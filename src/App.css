@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&family=Lora:wght@400;500&display=swap');
+body {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 0;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lora', serif;
+  font-weight: 400;
+}
+
+.nav-container {
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+#root {
+  width: 100%;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}

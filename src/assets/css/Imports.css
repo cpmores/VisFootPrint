@@ -1,0 +1,36 @@
+.imports {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.0rem;
+
+    max-width: 100%;
+}
+
+.imports  .CSVImporter_FileSelector{
+  width: 60vw !important;
+}
+.imports  .CSVImporter_Importer{
+  width: 60vw !important;
+}
+.analysis-button {
+    border-radius: 20px;
+    padding: 10px 20px;
+    width: 200px;
+    height: 40px;
+    background-color: #12af1250;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.analysis-button:hover {
+    background-color: rgba(255, 0, 0, 0.411);
+    transform: scale(1.05);
+}
