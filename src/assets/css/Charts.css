@@ -25,10 +25,14 @@
     grid-column-end: 3;
     grid-row-start: 1;
     grid-row-end: 4;
-    background-color: bisque;
+    background-color: whitesmoke;
     box-sizing: border-box;
     border: 1px dashed #ccc;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 
 }
 
@@ -37,15 +41,18 @@
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 4;
-    background-color: aquamarine;
+    background-color: whitesmoke;
     box-sizing: border-box;
     border: 1px dashed #ccc;
     border-radius: 8px;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .calculate.item-3 {
-    background-color: blueviolet;
+    background-color: whitesmoke;
 
     box-sizing: border-box;
     border: 1px dashed #ccc;
@@ -53,7 +60,7 @@
 }
 
 .calculate.item-4 {
-    background-color: rgb(208, 226, 43);
+    background-color: whitesmoke;
 
     box-sizing: border-box;
     border: 1px dashed #ccc;
@@ -61,13 +68,21 @@
 }
 
 .calculate.item-5 {
-    background-color: brown;
+    background-color: whitesmoke;
 
     grid-column-start: 3;
     grid-column-end: 5;
     box-sizing: border-box;
     border: 1px dashed #ccc;
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.yearlist {
+    width: 95%;
+    height: 70%;
 }
 
 /* in personal charts */
