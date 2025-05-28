@@ -70,7 +70,7 @@ export async function getAddressByOSM(
 
     if (data.error || !data.address) {
       console.error("OSM error:", data.error || "No address data");
-      return { province: "", city: "", district: "", cityCount: 0 };
+      return { province: "", city: "", district: "", suburb: "", cityCount: 0 };
     }
 
     const address = data.address;
@@ -78,6 +78,7 @@ export async function getAddressByOSM(
       province: address.state || "",
       city: address.city || "",
       district: address.suburb || address.county || "",
+      suburb: address.suburb || address.county || "",
       cityCount: citycount
     };
 
@@ -105,6 +106,6 @@ export async function getAddressByOSM(
     return result;
   } catch (error) {
     console.error("OSM request failed:", error);
-    return { province: "", city: "", district: "", cityCount: 0 };
+    return { province: "", city: "", district: "", suburb: "", cityCount: 0 };
   }
 }

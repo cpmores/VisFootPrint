@@ -64,7 +64,7 @@ const DynamicDoughnutChart: React.FC<DynamicDoughnutChartProps> = ({
         }
       } else {
         for (const address of addresses) {
-          const city = address.district;
+          const city = address.suburb;
           cityCounts.set(city, (cityCounts.get(city) || 0) + address.cityCount);
         }
       }

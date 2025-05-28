@@ -17,6 +17,7 @@ import {
   find_for_city,
   filter_for_city,
   count_for_district,
+  type Position,
 } from "../Analysis/types";
 import {
   CityCennter,
@@ -87,6 +88,7 @@ export default function CalculatePage() {
   const [cityOptions, setCityOptions] = useState<
     { value: string; label: string }[]
   >([]);
+  const [filterPos, setFilterPos] = useState<Position[]>([]);
 
   const rows = JSON.parse(localStorage.getItem("importedRows") || "[]");
   const bases = Raw2Base(rows);
@@ -142,6 +144,7 @@ export default function CalculatePage() {
             setError(err.message);
           }
         }
+        setFilterPos(filter_pos);
       }
       setAddresses(results);
       if (cityOptions.length == 0) setCityOptions(CityOption(countBases));
@@ -167,7 +170,11 @@ export default function CalculatePage() {
           <div className="calculate item-1">
             {selectedType == "1" && (
               <MapContainer
-                center={CityCennter(countBases)}
+                center={
+                  selectedYear == "All"
+                    ? CityCennter(countBases)
+                    : CityCennter(filterPos)
+                }
                 zoom={8}
                 scrollWheelZoom={true}
                 style={{ height: "100%", width: "100%" }}
@@ -176,41 +183,60 @@ export default function CalculatePage() {
                   attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {countBases.map((countbase, index) => (
-                  <Marker
-                    key={index}
-                    position={{
-                      lat: countbase.latitude,
-                      lng: countbase.longitude,
-                    }}
-                  >
-                    <Popup>
-                      {addresses[index]?.province || "未知"},{" "}
-                      {addresses[index]?.city || "未知"},{" "}
-                      {addresses[index]?.district || "未知"}
-                    </Popup>
-                  </Marker>
-                ))}
+                {selectedYear == "All"
+                  ? countBases.map((countbase, index) => (
+                      <Marker
+                        key={index}
+                        position={{
+                          lat: countbase.latitude,
+                          lng: countbase.longitude,
+                        }}
+                      >
+                        <Popup>
+                          {addresses[index]?.province || "未知"},{" "}
+                          {addresses[index]?.city || "未知"},{" "}
+                          {addresses[index]?.district || "未知"}
+                        </Popup>
+                      </Marker>
+                    ))
+                  : filterPos.map((countbase, index) => (
+                      <Marker
+                        key={index}
+                        position={{
+                          lat: countbase.latitude,
+                          lng: countbase.longitude,
+                        }}
+                      >
+                        <Popup>
+                          {addresses[index]?.province || "未知"},{" "}
+                          {addresses[index]?.city || "未知"},{" "}
+                          {addresses[index]?.district || "未知"}
+                        </Popup>
+                      </Marker>
+                    ))}
               </MapContainer>
             )}
           </div>
 
           <div className="calculate item-2" style={{ position: "relative" }}>
             {selectedType == "1" ? (
-              calculateFinish ? 
-              (selectedYear == "All" ? (
-                <DynamicDoughnutChart
-                  addresses={addresses}
-                  years={year_count}
-                  choose={true}
-                  choose2={true}
-                />
-              ) : <DynamicDoughnutChart
-                  addresses={addresses}
-                  years={year_count}
-                  choose={true}
-                  choose2={false}
-                /> ): (
+              calculateFinish ? (
+                selectedYear == "All" ? (
+                  <DynamicDoughnutChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={true}
+                  />
+                ) : (
+                  <DynamicDoughnutChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={false}
+                  />
+                )
+              ) : (
                 <Loading />
               )
             ) : (
@@ -218,7 +244,7 @@ export default function CalculatePage() {
                 addresses={addresses}
                 years={year_count}
                 choose={false}
-                  choose2={true}
+                choose2={true}
               />
             )}
           </div>

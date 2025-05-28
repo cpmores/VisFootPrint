@@ -27,6 +27,7 @@ export function CityCennter(pos_arrays: Position[]) {
     lat: lat,
     lng: long,
   };
+
 }
 
 // 拿到某个district的count
