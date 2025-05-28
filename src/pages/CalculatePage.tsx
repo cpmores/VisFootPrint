@@ -90,7 +90,7 @@ export default function CalculatePage() {
 
   const rows = JSON.parse(localStorage.getItem("importedRows") || "[]");
   const bases = Raw2Base(rows);
-  const countBases = CountCity(bases);
+  let countBases = CountCity(bases);
   const year_count = CountYear(bases);
   const year_options = YearOption(year_count);
 
@@ -116,10 +116,12 @@ export default function CalculatePage() {
             setError(err.message);
           }
         }
+
+        localStorage.setItem("CountBases", JSON.stringify(countBases));
       } else if (selectedType == "1" && selectedYear != "All") {
         // 筛选出新的位置，和如今城市一样的点
+        countBases = JSON.parse(localStorage.getItem("CountBases") || "[]");
         const city_pos = find_for_city(countBases, selectedYear);
-        console.log(countBases[0]);
         const filter_pos = filter_for_city(bases, city_pos);
         const countdistrict = count_for_district(filter_pos);
 

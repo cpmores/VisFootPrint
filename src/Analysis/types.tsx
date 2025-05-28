@@ -46,10 +46,10 @@ export function check_position(n1: Position, n2: Position) {
 
 export function check_district_position(n1: Position, n2: Position) {
   return (
-    n1.latitude - n2.latitude < 0.01 &&
-    n1.longitude - n2.longitude < 0.01 &&
-    n2.latitude - n1.latitude < 0.01 &&
-    n2.longitude - n1.longitude < 0.01
+    n1.latitude - n2.latitude < 0.001 &&
+    n1.longitude - n2.longitude < 0.001 &&
+    n2.latitude - n1.latitude < 0.001 &&
+    n2.longitude - n1.longitude < 0.001
   );
 }
 
