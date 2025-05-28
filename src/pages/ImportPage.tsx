@@ -16,9 +16,7 @@ export default function ImportPage() {
                 dataHandler={async (rows) => {
                     const updatedData = [...rows];
                     localStorage.setItem('importedRows', JSON.stringify(updatedData));
-                    for (const row of rows) {
-                        console.log('Row Data:', row);
-                    }
+
                 }}
                 onComplete={() => {
                     console.log('CSV Import Completed!');
