@@ -8,12 +8,12 @@ export default function PersonalPage() {
                 hello from Personal.
             </h1>
             <div className="chart-container">
-                <div className="chart-grid calculate">
-                    <div className="calculate item-1">1</div>
-                    <div className="calculate item-2">2</div>
-                    <div className="calculate item-3">3</div>
-                    <div className="calculate item-4">4</div>
-                    <div className="calculate item-5">5</div>
+                <div className="chart-grid personal">
+                    <div className="personal item-1">地图轨迹展示</div>
+                    <div className="personal item-2">个人之最</div>
+                    <div className="personal item-3">海拔</div>
+                    <div className="personal item-4">居住地</div>
+                    <div className="personal item-5">旅游推荐</div>
                 </div>
             </div>
         </div>
