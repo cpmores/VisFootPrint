@@ -36,6 +36,13 @@ export type YearCount = {
   count: number;
 };
 
+export type AltiCount = {
+    year: number,
+    month: number,
+    day: number,
+    altitude: number
+}
+
 export function check_position(n1: Position, n2: Position) {
   return (
     n1.latitude - n2.latitude < 0.5 &&

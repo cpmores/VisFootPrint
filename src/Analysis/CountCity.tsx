@@ -1,6 +1,7 @@
 import {
   check_district_position,
   check_position,
+  type AltiCount,
   type Basedata,
   type Position,
   type YearCount,
@@ -146,11 +147,11 @@ export function CountYear(bases: Basedata[]) {
     for (let year_array of year_arrays) {
       if (year_array.year == base_year.year) {
         flag = false;
-        if (year_array.lastTime <= base_year.lastTime) {
-          year_array.count++;
+        if (year_array.lastTime == base_year.lastTime) {
           break;
         }
 
+        year_array.count++;
         year_array.lastTime = base_year.lastTime;
       }
     }
@@ -161,4 +162,29 @@ export function CountYear(bases: Basedata[]) {
   }
 
   return year_arrays;
+}
+
+export function SortYearAlti(bases: Basedata[]) {
+    const year_arrays: AltiCount[] = [];
+    for (let base of bases) {
+        let flag = true;
+        if (year_arrays.length > 0) {
+            if (year_arrays[year_arrays.length - 1].day == base.day) {
+                flag = false;
+            } 
+        }
+
+        if (flag) {
+            const year_array:AltiCount = {
+                year: base.year,
+                month: base.month,
+                day: base.day,
+                altitude: base.altitude
+            }
+
+            year_arrays.push(year_array);
+        }
+    }
+
+    return year_arrays;
 }

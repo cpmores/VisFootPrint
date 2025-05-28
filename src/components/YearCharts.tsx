@@ -1,23 +1,46 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
+import type { Basedata, Rawdata } from "../Analysis/types";
+import { SortYearAlti } from "../Analysis/CountCity";
 
-interface Row {
-  DataTime: string;
-  value: number;
-  [key: string]: any;
+function Raw2Base(raws: Rawdata[]) {
+  const bases: Basedata[] = [];
+  for (let raw of raws) {
+    const date = new Date(parseInt(raw.DataTime, 10) * 1000);
+    const base: Basedata = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+      longitude: parseFloat(raw.longitude),
+      latitude: parseFloat(raw.latitude),
+      altitude: parseFloat(raw.altitude),
+    };
+    bases.push(base);
+  }
+  bases.sort((a, b) => {
+    if (a.year !== b.year) return a.year - b.year;
+    if (a.month !== b.month) return a.month - b.month;
+    return a.day - b.day;
+  });
+  return bases;
 }
 
 const DynamicSteppedLineChart: React.FC = () => {
-  const rows: Row[] = JSON.parse(localStorage.getItem("importedRows") || "[]");
+  const rows = JSON.parse(localStorage.getItem("importedRows") || "[]");
+  const bases = Raw2Base(rows);
+  const yearAlti = SortYearAlti(bases);
 
   const data = useMemo(() => {
-    if (rows.length > 0) {
-      return rows.map((row) => [
-        new Date(parseInt(row.DataTime, 10) * 1000).toISOString(),
-        row.value || 0,
-      ]);
-    }
+    const backYear: any[] = [];
+    if (yearAlti.length > 0) {
+        yearAlti.map((y) => {
+            const year_ele = [y.year.toString(10)+"-"+y.month+"-"+y.day, y.altitude ];
+            backYear.push(year_ele);
+        })
+
+        return backYear;
+    } 
     return [
       ["2023-01-01", 10],
       ["2023-02-01", 20],
@@ -30,7 +53,7 @@ const DynamicSteppedLineChart: React.FC = () => {
   // ECharts 配置
   const option = {
     title: {
-      text: "阶梯折线图",
+      text: "海拔梯度图",
       textStyle: { color: "#333" },
       left: "center",
     },
@@ -44,7 +67,7 @@ const DynamicSteppedLineChart: React.FC = () => {
       axisLabel: {
         color: "#333",
         formatter: (value: number) => {
-          return echarts.format.formatTime("MMM yyyy", value); // 格式化日期，如 "Jan 2023"
+          return echarts.format.formatTime("yyyy-MM-dd", value);
         },
       },
       axisLine: { lineStyle: { color: "#333" } },
@@ -57,16 +80,10 @@ const DynamicSteppedLineChart: React.FC = () => {
     },
     series: [
       {
-        name: "阶梯折线图数据",
+        name: "海拔",
         type: "line",
         step: "start", // 阶梯折线图，类似 Chart.js 的 stepped: "before"
-        data: [
-          ["2023-01-01", 10],
-          ["2023-02-01", 20],
-          ["2023-03-01", 15],
-          ["2023-04-01", 30],
-          ["2023-05-01", 25],
-        ],
+        data: data,
         lineStyle: { color: "#4bc0c0" },
         itemStyle: { color: "#4bc0c0" },
         areaStyle: {
@@ -117,3 +134,5 @@ const DynamicSteppedLineChart: React.FC = () => {
 };
 
 export default DynamicSteppedLineChart;
+
+

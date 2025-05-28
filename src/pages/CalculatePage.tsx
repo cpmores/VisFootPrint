@@ -168,7 +168,7 @@ export default function CalculatePage() {
       <div className="chart-container">
         <div className="chart-grid calculate">
           <div className="calculate item-1">
-            {selectedType == "1" && (
+            {(
               <MapContainer
                 center={
                   selectedYear == "All"
@@ -183,7 +183,7 @@ export default function CalculatePage() {
                   attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {selectedYear == "All"
+                {(selectedYear == "All" || selectedType == "0")
                   ? countBases.map((countbase, index) => (
                       <Marker
                         key={index}
