@@ -7,6 +7,22 @@ export type Basedata = {
   altitude: number;
 };
 
+export const Month_value2name: string[] = [
+  "",    
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
 export type Rawdata = {
   DataTime: string;
   altitude: string;
@@ -35,6 +51,13 @@ export type YearCount = {
   lastTime: number;
   count: number;
 };
+
+export type MonthCount = {
+    month_name: string;
+    month_value: number;
+    lastTime: number;
+    count: number;
+}
 
 export type AltiCount = {
     year: number,

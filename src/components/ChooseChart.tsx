@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import type { ChartData } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import type { Place, YearCount } from "../Analysis/types";
+import type { MonthCount, Place, YearCount } from "../Analysis/types";
+import { CountMonth } from "../Analysis/CountCity";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,6 +12,7 @@ interface DynamicDoughnutChartProps {
   years?: YearCount[];
   choose?: boolean;
   choose2?: boolean;
+  months: MonthCount[]
 }
 
 // Generate dynamic colors
@@ -39,6 +41,7 @@ const DynamicDoughnutChart: React.FC<DynamicDoughnutChartProps> = ({
   years,
   choose,
   choose2,
+  months
 }) => {
   const [chartData, setChartData] = useState<ChartData<"doughnut">>({
     labels: [],
@@ -97,13 +100,23 @@ const DynamicDoughnutChart: React.FC<DynamicDoughnutChartProps> = ({
         return;
       }
 
-      const yearCounts = new Map<number, number>();
-      for (const year of years) {
-        const year_name = year.year;
-        yearCounts.set(
-          year_name,
-          (yearCounts.get(year_name) || 0) + year.count
-        );
+      const yearCounts = new Map<string, number>();
+      if (choose2 == true) {
+        for (const year of years) {
+          const year_name = year.year;
+          yearCounts.set(
+            year_name.toString(),
+            (yearCounts.get(year_name.toString()) || 0) + year.count
+          );
+        }
+      } else {
+        for (const month of months) {
+            const month_name = month.month_name;
+            yearCounts.set(
+                month_name,
+                (yearCounts.get(month_name) || 0) + month.count
+            )
+        }
       }
 
       // Prepare chart data

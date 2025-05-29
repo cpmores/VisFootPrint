@@ -23,6 +23,7 @@ import {
   CityCennter,
   CityOption,
   CountCity,
+  CountMonth,
   CountYear,
   YearOption,
 } from "../Analysis/CountCity";
@@ -229,6 +230,7 @@ export default function CalculatePage() {
                     years={year_count}
                     choose={true}
                     choose2={true}
+                    months={CountMonth(bases, selectedYear)}
                   />
                 ) : (
                   <DynamicDoughnutChart
@@ -236,17 +238,27 @@ export default function CalculatePage() {
                     years={year_count}
                     choose={true}
                     choose2={false}
+                    months={CountMonth(bases, selectedYear)}
                   />
                 )
               ) : (
                 <Loading />
               )
-            ) : (
+            ) : selectedYear == "All" ? (
               <DynamicDoughnutChart
                 addresses={addresses}
                 years={year_count}
                 choose={false}
                 choose2={true}
+                months={CountMonth(bases, selectedYear)}
+              />
+            ) : (
+              <DynamicDoughnutChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={false}
+                months={CountMonth(bases, selectedYear)}
               />
             )}
           </div>
