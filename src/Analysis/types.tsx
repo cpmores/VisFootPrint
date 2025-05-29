@@ -8,7 +8,7 @@ export type Basedata = {
 };
 
 export const Month_value2name: string[] = [
-  "",    
+  "",
   "January",
   "February",
   "March",
@@ -20,7 +20,7 @@ export const Month_value2name: string[] = [
   "September",
   "October",
   "November",
-  "December"
+  "December",
 ];
 
 export type Rawdata = {
@@ -52,19 +52,26 @@ export type YearCount = {
   count: number;
 };
 
+export type YearBase = {
+  longitude: number;
+  latitude: number;
+  lastTime: number;
+  year: number;
+};
+
 export type MonthCount = {
-    month_name: string;
-    month_value: number;
-    lastTime: number;
-    count: number;
-}
+  month_name: string;
+  month_value: number;
+  lastTime: number;
+  count: number;
+};
 
 export type AltiCount = {
-    year: number,
-    month: number,
-    day: number,
-    altitude: number
-}
+  year: number;
+  month: number;
+  day: number;
+  altitude: number;
+};
 
 export function check_position(n1: Position, n2: Position) {
   return (
@@ -74,7 +81,6 @@ export function check_position(n1: Position, n2: Position) {
     n2.longitude - n1.longitude < 0.5
   );
 }
-
 
 export function check_district_position(n1: Position, n2: Position) {
   return (
@@ -138,4 +144,30 @@ export function count_for_district(filter_poss: Position[]) {
   }
 
   return countdis;
+}
+
+export function filter_for_year(bases: Basedata[], year: number) {
+  const year_filter_base: YearBase[] = [];
+  for (let base of bases) {
+    const year_base: YearBase = {
+      longitude: base.longitude,
+      latitude: base.latitude,
+      lastTime: base.year * 10000 + base.month * 100 + base.day,
+      year: base.year,
+    };
+    if (year == base.year) {
+      let flag = true;
+      for (let year_filter of year_filter_base) {
+        if (year_filter.lastTime == year_base.lastTime) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        year_filter_base.push(year_base);
+      }
+    }
+  }
+
+  return year_filter_base;
 }

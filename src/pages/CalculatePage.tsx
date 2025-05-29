@@ -18,6 +18,8 @@ import {
   filter_for_city,
   count_for_district,
   type Position,
+  type YearBase,
+  filter_for_year,
 } from "../Analysis/types";
 import {
   CityCennter,
@@ -90,6 +92,7 @@ export default function CalculatePage() {
     { value: string; label: string }[]
   >([]);
   const [filterPos, setFilterPos] = useState<Position[]>([]);
+  const [filterYearPos, setfilterYearPos] = useState<YearBase[]>([]);
 
   const rows = JSON.parse(localStorage.getItem("importedRows") || "[]");
   const bases = Raw2Base(rows);
@@ -154,6 +157,7 @@ export default function CalculatePage() {
       setcalculateFinish(true);
     };
     fetchAddresses();
+    setfilterYearPos(filter_for_year(bases, parseInt(selectedYear, 10)));
     analyzeLatLonRange(rows);
     return () => controller.abort();
   }, [selectedType, selectedYear]);
@@ -186,7 +190,39 @@ export default function CalculatePage() {
                   attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {selectedYear == "All" || selectedType == "0"
+                {selectedType == "1"
+                  ? selectedYear == "All"
+                    ? countBases.map((countbase, index) => (
+                        <Marker
+                          key={index}
+                          position={{
+                            lat: countbase.latitude,
+                            lng: countbase.longitude,
+                          }}
+                        >
+                          <Popup>
+                            {addresses[index]?.province || "未知"},{" "}
+                            {addresses[index]?.city || "未知"},{" "}
+                            {addresses[index]?.district || "未知"}
+                          </Popup>
+                        </Marker>
+                      ))
+                    : filterPos.map((countbase, index) => (
+                        <Marker
+                          key={index}
+                          position={{
+                            lat: countbase.latitude,
+                            lng: countbase.longitude,
+                          }}
+                        >
+                          <Popup>
+                            {addresses[index]?.province || "未知"},{" "}
+                            {addresses[index]?.city || "未知"},{" "}
+                            {addresses[index]?.district || "未知"}
+                          </Popup>
+                        </Marker>
+                      ))
+                  : selectedYear == "All"
                   ? countBases.map((countbase, index) => (
                       <Marker
                         key={index}
@@ -202,7 +238,7 @@ export default function CalculatePage() {
                         </Popup>
                       </Marker>
                     ))
-                  : filterPos.map((countbase, index) => (
+                  : filterYearPos.map((countbase, index) => (
                       <Marker
                         key={index}
                         position={{
