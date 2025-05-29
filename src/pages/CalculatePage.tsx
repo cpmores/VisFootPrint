@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DynamicDoughnutChart from "../components/ChooseChart";
 import DynamicSteppedLineChart from "../components/YearCharts";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import BarChart from "../components/BarChart";
 import MultiAxisLineChart from "../components/MultilineChart";
 import L from "leaflet";
@@ -144,6 +144,8 @@ export default function CalculatePage() {
             setError(err.message);
           }
         }
+        console.log(filter_pos);
+        console.log(city_pos);
         setFilterPos(filter_pos);
       }
       setAddresses(results);
@@ -168,7 +170,7 @@ export default function CalculatePage() {
       <div className="chart-container">
         <div className="chart-grid calculate">
           <div className="calculate item-1">
-            {(
+            {
               <MapContainer
                 center={
                   selectedYear == "All"
@@ -183,7 +185,7 @@ export default function CalculatePage() {
                   attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {(selectedYear == "All" || selectedType == "0")
+                {selectedYear == "All" || selectedType == "0"
                   ? countBases.map((countbase, index) => (
                       <Marker
                         key={index}
@@ -215,7 +217,7 @@ export default function CalculatePage() {
                       </Marker>
                     ))}
               </MapContainer>
-            )}
+            }
           </div>
 
           <div className="calculate item-2" style={{ position: "relative" }}>

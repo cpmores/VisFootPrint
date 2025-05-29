@@ -74,7 +74,7 @@ export function CountCity(bases: Basedata[]) {
       latitude: base.latitude,
       city: "",
       count: 1,
-      lastTime: base.day,
+      lastTime: base.day + base.month * 100 + base.year * 10000,
     };
     for (let pos_array of pos_arrays) {
       let pos_postion: Position = {

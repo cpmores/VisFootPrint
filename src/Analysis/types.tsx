@@ -52,6 +52,7 @@ export function check_position(n1: Position, n2: Position) {
   );
 }
 
+
 export function check_district_position(n1: Position, n2: Position) {
   return (
     n1.latitude - n2.latitude < 0.01 &&
@@ -80,7 +81,7 @@ export function filter_for_city(bases: Basedata[], city_pos: Position) {
       latitude: base.latitude,
       city: city_pos.city,
       count: 1,
-      lastTime: base.day,
+      lastTime: base.year * 10000 + base.month * 100 + base.day,
     };
 
     if (
