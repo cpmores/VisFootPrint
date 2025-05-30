@@ -91,6 +91,15 @@ export function check_district_position(n1: Position, n2: Position) {
   );
 }
 
+export function check_district_position_year(n1: YearBase, n2: YearBase) {
+  return (
+    n1.latitude - n2.latitude < 0.01 &&
+    n1.longitude - n2.longitude < 0.01 &&
+    n2.latitude - n1.latitude < 0.01 &&
+    n2.longitude - n1.longitude < 0.01
+  );
+}
+
 // need for longitude and latitude
 export function find_for_city(pos_arrays: Position[], city_name: string) {
   for (let pos_array of pos_arrays) {
@@ -158,7 +167,7 @@ export function filter_for_year(bases: Basedata[], year: number) {
     if (year == base.year) {
       let flag = true;
       for (let year_filter of year_filter_base) {
-        if (year_filter.lastTime == year_base.lastTime) {
+        if (year_filter.lastTime == year_base.lastTime && check_district_position_year(year_filter, year_base)) {
           flag = false;
           break;
         }

@@ -300,11 +300,67 @@ export default function CalculatePage() {
           </div>
 
           <div className="calculate item-3">
-            <BarChart />
+            {selectedType == "1" ? (
+              calculateFinish ? (
+                selectedYear == "All" ? (
+                  <BarChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={true}
+                    months={CountMonth(bases, selectedYear)}
+                  />
+                ) : (
+                  <BarChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={false}
+                    months={CountMonth(bases, selectedYear)}
+                  />
+                )
+              ) : (
+                <Loading />
+              )
+            ) : selectedYear == "All" ? (
+              <BarChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={true}
+                months={CountMonth(bases, selectedYear)}
+              />
+            ) : (
+              <BarChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={false}
+                months={CountMonth(bases, selectedYear)}
+              />
+            )}
           </div>
 
           <div className="calculate item-4">
-            <MultiAxisLineChart />
+            {calculateFinish ? (
+              selectedType == "1" || selectedYear == "All" ? (
+                <MultiAxisLineChart
+                  choose={true}
+                  year_name={selectedYear}
+                  bases={bases}
+                  year_options={year_options}
+                />
+              ) : (
+                <MultiAxisLineChart
+                  choose={false}
+                  year_name={selectedYear}
+                  bases={bases}
+                  year_options={year_options}
+                />
+              )
+            ) : (
+              <Loading />
+            )}
           </div>
 
           <div className="calculate item-5">
