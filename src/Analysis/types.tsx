@@ -7,6 +7,22 @@ export type Basedata = {
   altitude: number;
 };
 
+export const Month_value2name: string[] = [
+  "",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export type Rawdata = {
   DataTime: string;
   altitude: string;
@@ -34,6 +50,28 @@ export type YearCount = {
   year: number;
   lastTime: number;
   count: number;
+};
+
+
+export type YearBase = {
+  longitude: number;
+  latitude: number;
+  lastTime: number;
+  year: number;
+};
+
+export type MonthCount = {
+  month_name: string;
+  month_value: number;
+  lastTime: number;
+  count: number;
+};
+
+export type AltiCount = {
+  year: number;
+  month: number;
+  day: number;
+  altitude: number;
 };
 
 export type Time = {
@@ -68,6 +106,15 @@ export function check_district_position(n1: Position, n2: Position) {
   );
 }
 
+export function check_district_position_year(n1: YearBase, n2: YearBase) {
+  return (
+    n1.latitude - n2.latitude < 0.01 &&
+    n1.longitude - n2.longitude < 0.01 &&
+    n2.latitude - n1.latitude < 0.01 &&
+    n2.longitude - n1.longitude < 0.01
+  );
+}
+
 // need for longitude and latitude
 export function find_for_city(pos_arrays: Position[], city_name: string) {
   for (let pos_array of pos_arrays) {
@@ -87,7 +134,7 @@ export function filter_for_city(bases: Basedata[], city_pos: Position) {
       latitude: base.latitude,
       city: city_pos.city,
       count: 1,
-      lastTime: base.day,
+      lastTime: base.year * 10000 + base.month * 100 + base.day,
     };
 
     if (
@@ -121,4 +168,30 @@ export function count_for_district(filter_poss: Position[]) {
   }
 
   return countdis;
+}
+
+export function filter_for_year(bases: Basedata[], year: number) {
+  const year_filter_base: YearBase[] = [];
+  for (let base of bases) {
+    const year_base: YearBase = {
+      longitude: base.longitude,
+      latitude: base.latitude,
+      lastTime: base.year * 10000 + base.month * 100 + base.day,
+      year: base.year,
+    };
+    if (year == base.year) {
+      let flag = true;
+      for (let year_filter of year_filter_base) {
+        if (year_filter.lastTime == year_base.lastTime && check_district_position_year(year_filter, year_base)) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        year_filter_base.push(year_base);
+      }
+    }
+  }
+
+  return year_filter_base;
 }

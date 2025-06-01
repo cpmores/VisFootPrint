@@ -1,7 +1,10 @@
 import {
   check_district_position,
   check_position,
+  Month_value2name,
+  type AltiCount,
   type Basedata,
+  type MonthCount,
   type Position,
   type YearCount,
   type TraceItem
@@ -28,7 +31,6 @@ export function CityCennter(pos_arrays: Position[]) {
     lat: lat,
     lng: long,
   };
-
 }
 
 // 拿到某个district的count
@@ -74,7 +76,7 @@ export function CountCity(bases: Basedata[]) {
       latitude: base.latitude,
       city: "",
       count: 1,
-      lastTime: base.day,
+      lastTime: base.day + base.month * 100 + base.year * 10000,
     };
     for (let pos_array of pos_arrays) {
       let pos_postion: Position = {
@@ -132,6 +134,7 @@ export function CityOption(countBases: Position[]) {
   })
 
   return options;
+  return options;
 }
 
 export function CountYear(bases: Basedata[]) {
@@ -139,7 +142,7 @@ export function CountYear(bases: Basedata[]) {
   for (let base of bases) {
     const base_year: YearCount = {
       year: base.year,
-      lastTime: base.day,
+      lastTime: base.year * 10000 + base.month * 100 + base.day,
       count: 1,
     };
 
@@ -147,17 +150,129 @@ export function CountYear(bases: Basedata[]) {
     for (let year_array of year_arrays) {
       if (year_array.year == base_year.year) {
         flag = false;
-        if (year_array.lastTime <= base_year.lastTime) {
-          year_array.count++;
+        if (year_array.lastTime == base_year.lastTime) {
           break;
         }
 
+        year_array.count++;
         year_array.lastTime = base_year.lastTime;
       }
     }
 
     if (flag) {
       year_arrays.push(base_year);
+    }
+  }
+
+  return year_arrays;
+}
+
+export function CountMonth(countYears: Basedata[], year_name: string) {
+  const month_arrays: MonthCount[] = [];
+  if (year_name == "All") return month_arrays;
+  for (let countYear of countYears) {
+    if (countYear.year == parseInt(year_name, 10)) {
+      let flag = true;
+      const month_count: MonthCount = {
+        month_name: Month_value2name[countYear.month],
+        month_value: countYear.month,
+        lastTime:
+          countYear.year * 10000 + countYear.month * 100 + countYear.day,
+        count: 1,
+      };
+      for (let month_array of month_arrays) {
+        if (month_count.month_value == month_array.month_value) {
+          flag = false;
+          if (month_count.lastTime > month_array.lastTime) month_array.count++;
+          month_array.lastTime = month_count.lastTime;
+          break;
+        }
+      }
+
+      if (flag) {
+        month_arrays.push(month_count);
+      }
+    }
+  }
+
+  return month_arrays;
+}
+
+export function SortYearAlti(bases: Basedata[]) {
+  const year_arrays: AltiCount[] = [];
+  for (let base of bases) {
+    let flag = true;
+    if (year_arrays.length > 0) {
+      if (year_arrays[year_arrays.length - 1].day == base.day) {
+        flag = false;
+      }
+    }
+
+    if (flag) {
+      const year_array: AltiCount = {
+        year: base.year,
+        month: base.month,
+        day: base.day,
+        altitude: base.altitude,
+      };
+
+      year_arrays.push(year_array);
+    }
+  }
+
+  return year_arrays;
+}
+
+export function CountMonth(countYears: Basedata[], year_name: string) {
+  const month_arrays: MonthCount[] = [];
+  if (year_name == "All") return month_arrays;
+  for (let countYear of countYears) {
+    if (countYear.year == parseInt(year_name, 10)) {
+      let flag = true;
+      const month_count: MonthCount = {
+        month_name: Month_value2name[countYear.month],
+        month_value: countYear.month,
+        lastTime:
+          countYear.year * 10000 + countYear.month * 100 + countYear.day,
+        count: 1,
+      };
+      for (let month_array of month_arrays) {
+        if (month_count.month_value == month_array.month_value) {
+          flag = false;
+          if (month_count.lastTime > month_array.lastTime) month_array.count++;
+          month_array.lastTime = month_count.lastTime;
+          break;
+        }
+      }
+
+      if (flag) {
+        month_arrays.push(month_count);
+      }
+    }
+  }
+
+  return month_arrays;
+}
+
+export function SortYearAlti(bases: Basedata[]) {
+  const year_arrays: AltiCount[] = [];
+  for (let base of bases) {
+    let flag = true;
+    if (year_arrays.length > 0) {
+      if (year_arrays[year_arrays.length - 1].day == base.day) {
+        flag = false;
+      }
+    }
+
+    if (flag) {
+      const year_array: AltiCount = {
+        year: base.year,
+        month: base.month,
+        day: base.day,
+        altitude: base.altitude,
+      };
+
+      year_arrays.push(year_array);
     }
   }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DynamicDoughnutChart from "../components/ChooseChart";
 import DynamicSteppedLineChart from "../components/YearCharts";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import BarChart from "../components/BarChart";
 import MultiAxisLineChart from "../components/MultilineChart";
 import L from "leaflet";
@@ -18,11 +18,14 @@ import {
   filter_for_city,
   count_for_district,
   type Position,
+  type YearBase,
+  filter_for_year,
 } from "../Analysis/types";
 import {
   CityCennter,
   CityOption,
   CountCity,
+  CountMonth,
   CountYear,
   YearOption,
 } from "../Analysis/CountCity";
@@ -89,6 +92,7 @@ export default function CalculatePage() {
     { value: string; label: string }[]
   >([]);
   const [filterPos, setFilterPos] = useState<Position[]>([]);
+  const [filterYearPos, setfilterYearPos] = useState<YearBase[]>([]);
 
   const rows = JSON.parse(localStorage.getItem("importedRows") || "[]");
   const bases = Raw2Base(rows);
@@ -144,6 +148,8 @@ export default function CalculatePage() {
             setError(err.message);
           }
         }
+        console.log(filter_pos);
+        console.log(city_pos);
         setFilterPos(filter_pos);
       }
       setAddresses(results);
@@ -151,6 +157,7 @@ export default function CalculatePage() {
       setcalculateFinish(true);
     };
     fetchAddresses();
+    setfilterYearPos(filter_for_year(bases, parseInt(selectedYear, 10)));
     analyzeLatLonRange(rows);
     return () => controller.abort();
   }, [selectedType, selectedYear]);
@@ -168,7 +175,7 @@ export default function CalculatePage() {
       <div className="chart-container">
         <div className="chart-grid calculate">
           <div className="calculate item-1">
-            {selectedType == "1" && (
+            {
               <MapContainer
                 center={
                   selectedYear == "All"
@@ -183,7 +190,39 @@ export default function CalculatePage() {
                   attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {selectedYear == "All"
+                {selectedType == "1"
+                  ? selectedYear == "All"
+                    ? countBases.map((countbase, index) => (
+                        <Marker
+                          key={index}
+                          position={{
+                            lat: countbase.latitude,
+                            lng: countbase.longitude,
+                          }}
+                        >
+                          <Popup>
+                            {addresses[index]?.province || "未知"},{" "}
+                            {addresses[index]?.city || "未知"},{" "}
+                            {addresses[index]?.district || "未知"}
+                          </Popup>
+                        </Marker>
+                      ))
+                    : filterPos.map((countbase, index) => (
+                        <Marker
+                          key={index}
+                          position={{
+                            lat: countbase.latitude,
+                            lng: countbase.longitude,
+                          }}
+                        >
+                          <Popup>
+                            {addresses[index]?.province || "未知"},{" "}
+                            {addresses[index]?.city || "未知"},{" "}
+                            {addresses[index]?.district || "未知"}
+                          </Popup>
+                        </Marker>
+                      ))
+                  : selectedYear == "All"
                   ? countBases.map((countbase, index) => (
                       <Marker
                         key={index}
@@ -199,7 +238,7 @@ export default function CalculatePage() {
                         </Popup>
                       </Marker>
                     ))
-                  : filterPos.map((countbase, index) => (
+                  : filterYearPos.map((countbase, index) => (
                       <Marker
                         key={index}
                         position={{
@@ -215,7 +254,7 @@ export default function CalculatePage() {
                       </Marker>
                     ))}
               </MapContainer>
-            )}
+            }
           </div>
 
           <div className="calculate item-2" style={{ position: "relative" }}>
@@ -227,6 +266,7 @@ export default function CalculatePage() {
                     years={year_count}
                     choose={true}
                     choose2={true}
+                    months={CountMonth(bases, selectedYear)}
                   />
                 ) : (
                   <DynamicDoughnutChart
@@ -234,27 +274,93 @@ export default function CalculatePage() {
                     years={year_count}
                     choose={true}
                     choose2={false}
+                    months={CountMonth(bases, selectedYear)}
                   />
                 )
               ) : (
                 <Loading />
               )
-            ) : (
+            ) : selectedYear == "All" ? (
               <DynamicDoughnutChart
                 addresses={addresses}
                 years={year_count}
                 choose={false}
                 choose2={true}
+                months={CountMonth(bases, selectedYear)}
+              />
+            ) : (
+              <DynamicDoughnutChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={false}
+                months={CountMonth(bases, selectedYear)}
               />
             )}
           </div>
 
           <div className="calculate item-3">
-            <BarChart />
+            {selectedType == "1" ? (
+              calculateFinish ? (
+                selectedYear == "All" ? (
+                  <BarChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={true}
+                    months={CountMonth(bases, selectedYear)}
+                  />
+                ) : (
+                  <BarChart
+                    addresses={addresses}
+                    years={year_count}
+                    choose={true}
+                    choose2={false}
+                    months={CountMonth(bases, selectedYear)}
+                  />
+                )
+              ) : (
+                <Loading />
+              )
+            ) : selectedYear == "All" ? (
+              <BarChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={true}
+                months={CountMonth(bases, selectedYear)}
+              />
+            ) : (
+              <BarChart
+                addresses={addresses}
+                years={year_count}
+                choose={false}
+                choose2={false}
+                months={CountMonth(bases, selectedYear)}
+              />
+            )}
           </div>
 
           <div className="calculate item-4">
-            <MultiAxisLineChart />
+            {calculateFinish ? (
+              selectedType == "1" || selectedYear == "All" ? (
+                <MultiAxisLineChart
+                  choose={true}
+                  year_name={selectedYear}
+                  bases={bases}
+                  year_options={year_options}
+                />
+              ) : (
+                <MultiAxisLineChart
+                  choose={false}
+                  year_name={selectedYear}
+                  bases={bases}
+                  year_options={year_options}
+                />
+              )
+            ) : (
+              <Loading />
+            )}
           </div>
 
           <div className="calculate item-5">

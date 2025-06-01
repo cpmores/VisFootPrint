@@ -78,7 +78,7 @@ export async function getAddressByOSM(
       province: address.state || "",
       city: address.city || "",
       district: address.suburb || address.county || "",
-      suburb: address.suburb || address.county || "",
+      suburb: address.town || address.village || address.suburb || address.county || "",
       cityCount: citycount
     };
 
