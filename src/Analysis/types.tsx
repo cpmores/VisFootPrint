@@ -52,6 +52,19 @@ export type YearCount = {
   count: number;
 };
 
+export type Time = {
+  year: number;
+  month: number;
+  day: number;
+}
+export type TraceItem = {
+  latitude: number;
+  longitude: number;
+  startTime: Time;
+  endTime?: Time;
+  province?: string;
+  city?: string;
+}
 
 export type YearBase = {
   longitude: number;
@@ -73,20 +86,6 @@ export type AltiCount = {
   day: number;
   altitude: number;
 };
-
-export type Time = {
-  year: number;
-  month: number;
-  day: number;
-}
-export type TraceItem = {
-  latitude: number;
-  longitude: number;
-  startTime: Time;
-  endTime?: Time;
-  province?: string;
-  city?: string;
-}
 
 export function check_position(n1: Position|Basedata|TraceItem, n2: Position|Basedata|TraceItem) {
   return (
