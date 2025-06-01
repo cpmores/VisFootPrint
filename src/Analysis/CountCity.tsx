@@ -4,6 +4,7 @@ import {
   type Basedata,
   type Position,
   type YearCount,
+  type TraceItem
 } from "./types";
 
 interface OptionType {
@@ -102,7 +103,7 @@ export function CountCity(bases: Basedata[]) {
 
 export function YearOption(year_arrays: YearCount[]) {
   const options: OptionType[] = [
-    {value: 'All', label: 'All'},
+    { value: 'All', label: 'All' },
   ];
   year_arrays.map((year_array, index) => {
     let option = {
@@ -117,20 +118,20 @@ export function YearOption(year_arrays: YearCount[]) {
 }
 
 export function CityOption(countBases: Position[]) {
-    const options: OptionType[] = [
-        {value: 'All', label: 'All'},
-    ];
+  const options: OptionType[] = [
+    { value: 'All', label: 'All' },
+  ];
 
-    countBases.map((countbase, index) => {
-        let option = {
-            value: countbase.city,
-            label: countbase.city
-        };
+  countBases.map((countbase, index) => {
+    let option = {
+      value: countbase.city,
+      label: countbase.city
+    };
 
-        options.push(option);
-    })
+    options.push(option);
+  })
 
-    return options;
+  return options;
 }
 
 export function CountYear(bases: Basedata[]) {
@@ -161,4 +162,52 @@ export function CountYear(bases: Basedata[]) {
   }
 
   return year_arrays;
+}
+
+
+export function trace(bases: Basedata[]): TraceItem[] {
+  const results: TraceItem[] = [];
+  for (let base of bases) {
+    const l = results.length;
+    if (l === 0) {
+      results.push({
+        startTime: {
+          year: base.year,
+          month: base.month,
+          day: base.day,
+        },
+        endTime: {
+          year: base.year,
+          month: base.month,
+          day: base.day,
+        },
+        longitude: base.longitude,
+        latitude: base.latitude,
+      })
+    } else {
+      results[l - 1].endTime = {
+        year: base.year,
+        month: base.month,
+        day: base.day,
+      }
+      if (!check_position(results[l - 1], base)) {
+        results.push({
+          startTime: {
+            year: base.year,
+            month: base.month,
+            day: base.day,
+          },
+          endTime: {
+            year: base.year,
+            month: base.month,
+            day: base.day,
+          },
+          longitude: base.longitude,
+          latitude: base.latitude,
+        })
+      }
+    }
+    // console.log(results);
+  }
+  return results;
 }

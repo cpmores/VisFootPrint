@@ -98,12 +98,11 @@ export default function ExtremeLocations({ data }: ExtremeLocationsProps) {
 
   return (
     <Box sx={{ mt: 4 }}>
-      {/* // 这个组件要居中 */}
       <Typography style={{textAlign: 'center'}} variant="h6" component="h2" sx={{ mb: 2, fontWeight: 600, color: 'text.secondary' }}>
         位置极限探索
       </Typography>
       
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent={'center'} mb={'20px'}>
         {locationCards.map((card, index) => (
           <Grid key={index}>
             <Card 

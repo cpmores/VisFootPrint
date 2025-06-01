@@ -24,8 +24,8 @@ export default function RankItem({ data, totalNum }: RankProps) {
             altitude: item.altitude.toFixed(3),
             origin: item
         }));
-    console.log(processedData);
-    processedData.length = totalNum || Math.min(24, processedData.length);
+    // console.log(processedData);
+    processedData.length = totalNum || Math.min(16, processedData.length);
 
     const option = {
         title: {

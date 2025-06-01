@@ -46,7 +46,6 @@
 
 .calculate.item-3 {
     background-color: blueviolet;
-
     box-sizing: border-box;
     border: 1px dashed #ccc;
     border-radius: 8px;
@@ -94,42 +93,40 @@
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
-    grid-row-end: 3;
+    grid-row-end:3;
     background-color: whitesmoke;
     box-sizing: border-box;
-    border: 1px dashed #ccc;
+    border: 1px #ccc;
     border-radius: 8px;
 }
 
 .personal.item-2 {
-    grid-column-start: 3;
-    grid-column-end: 5;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    background-color: whitesmoke;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 5;
     box-sizing: border-box;
-    border: 1px dashed #ccc;
+    border: 1px #ccc;
     border-radius: 8px;
 }
-
 .personal.item-3 {
     background-color: whitesmoke;
     grid-column-start: 3;
     grid-column-end: 5;
-    grid-row-start: 2;
-    grid-row-end: 3;
+    grid-row-start: 1;
+    grid-row-end:3;
     box-sizing: border-box;
-    border: 1px dashed #ccc;
+    border: 1px #ccc;
     border-radius: 8px;
 }
 
 .personal.item-4 {
-    background-color: whitesmoke;
-    grid-column-start: 1;
+    grid-column-start: 3;
     grid-column-end: 5;
     grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-end: 5;
+    background-color: whitesmoke;
     box-sizing: border-box;
-    border: 1px dashed #ccc;
+    border: 1px #ccc;
     border-radius: 8px;
 }

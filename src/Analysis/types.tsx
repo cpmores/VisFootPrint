@@ -36,7 +36,21 @@ export type YearCount = {
   count: number;
 };
 
-export function check_position(n1: Position, n2: Position) {
+export type Time = {
+  year: number;
+  month: number;
+  day: number;
+}
+export type TraceItem = {
+  latitude: number;
+  longitude: number;
+  startTime: Time;
+  endTime?: Time;
+  province?: string;
+  city?: string;
+}
+
+export function check_position(n1: Position|Basedata|TraceItem, n2: Position|Basedata|TraceItem) {
   return (
     n1.latitude - n2.latitude < 0.5 &&
     n1.longitude - n2.longitude < 0.5 &&
