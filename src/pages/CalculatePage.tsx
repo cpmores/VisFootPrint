@@ -165,6 +165,7 @@ export default function CalculatePage() {
   return (
     <div>
       {error && <div style={{ color: "red" }}>错误: {error}</div>}
+      <h1>统计信息分析</h1>
       <YearSelector
         selectedType={selectedType}
         setSelectedType={setSelectedType}
